@@ -1,17 +1,70 @@
+import React from 'react'
+import { motion } from 'framer-motion'
+
 function Footer() {
+    // Animation variants
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.3,
+            },
+        },
+    }
+
+    const itemVariants = {
+        hidden: { y: 20, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1,
+            transition: {
+                type: 'spring',
+                stiffness: 100,
+                damping: 10,
+            },
+        },
+    }
+
+    const socialIconVariants = {
+        hover: {
+            scale: 1.2,
+            color: '#f59e0b',
+        },
+        tap: { scale: 0.9 },
+    }
+
     return (
-        <footer className="bg-black px-6 py-12 font-serif text-white">
+        <motion.footer
+            className="bg-black px-6 py-12 font-serif text-white"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={containerVariants}
+        >
             <div className="mx-auto max-w-7xl">
                 <div className="grid gap-12 md:grid-cols-3">
-                    <div className="space-y-4">
-                        <h2 className="text-2xl font-bold tracking-tight text-amber-500 transition-colors duration-300 hover:text-amber-400">
+                    {/* Brand Column */}
+                    <motion.div className="space-y-4" variants={itemVariants}>
+                        <motion.h2
+                            className="text-2xl font-bold tracking-tight text-amber-500 transition-colors duration-300 hover:text-amber-400"
+                            whileHover={{ scale: 1.02 }}
+                        >
                             CaptureHub
-                        </h2>
-                        <p className="leading-relaxed text-gray-400">
+                        </motion.h2>
+                        <motion.p
+                            className="leading-relaxed text-gray-400"
+                            variants={itemVariants}
+                        >
                             Your premier destination for professional
                             photography equipment and expert advice.
-                        </p>
-                        <div className="flex items-center space-x-2 text-gray-400 transition-colors duration-300 hover:text-white">
+                        </motion.p>
+                        <motion.div
+                            className="flex items-center space-x-2 text-gray-400 transition-colors duration-300 hover:text-white"
+                            variants={itemVariants}
+                            whileHover={{ x: 5 }}
+                        >
                             <svg
                                 className="h-5 w-5"
                                 fill="none"
@@ -26,15 +79,21 @@ function Footer() {
                                 />
                             </svg>
                             <span>+1 (555) 123-4567</span>
-                        </div>
-                    </div>
+                        </motion.div>
+                    </motion.div>
 
                     {/* Quick Links */}
-                    <div className="space-y-4">
-                        <h3 className="border-b border-gray-700 pb-2 text-lg font-semibold text-white">
+                    <motion.div className="space-y-4" variants={itemVariants}>
+                        <motion.h3
+                            className="border-b border-gray-700 pb-2 text-lg font-semibold text-white"
+                            variants={itemVariants}
+                        >
                             Quick Links
-                        </h3>
-                        <ul className="space-y-3">
+                        </motion.h3>
+                        <motion.ul
+                            className="space-y-3"
+                            variants={containerVariants}
+                        >
                             {[
                                 'Products',
                                 'About Us',
@@ -42,25 +101,44 @@ function Footer() {
                                 'Support',
                                 'Blog',
                             ].map((item) => (
-                                <li key={item}>
-                                    <a
+                                <motion.li key={item} variants={itemVariants}>
+                                    <motion.a
                                         href="#"
-                                        className="relative text-gray-400 transition-all duration-300 before:absolute before:-bottom-1 before:left-0 before:h-px before:w-0 before:bg-amber-400 before:transition-all before:duration-300 hover:text-amber-400 hover:before:w-full"
+                                        className="relative text-gray-400"
+                                        whileHover={{
+                                            color: '#f59e0b',
+                                            x: 5,
+                                        }}
+                                        transition={{
+                                            type: 'spring',
+                                            stiffness: 300,
+                                        }}
                                     >
-                                        {item}
-                                    </a>
-                                </li>
+                                        <span className="block">{item}</span>
+                                        <motion.div
+                                            className="absolute -bottom-1 left-0 h-px w-0 bg-amber-400"
+                                            whileHover={{ width: '100%' }}
+                                            transition={{ duration: 0.3 }}
+                                        />
+                                    </motion.a>
+                                </motion.li>
                             ))}
-                        </ul>
-                    </div>
+                        </motion.ul>
+                    </motion.div>
 
                     {/* Social & Newsletter */}
-                    <div className="space-y-6">
-                        <div>
-                            <h3 className="border-b border-gray-700 pb-2 text-lg font-semibold text-white">
+                    <motion.div className="space-y-6" variants={itemVariants}>
+                        <motion.div variants={itemVariants}>
+                            <motion.h3
+                                className="border-b border-gray-700 pb-2 text-lg font-semibold text-white"
+                                variants={itemVariants}
+                            >
                                 Follow Us
-                            </h3>
-                            <div className="mt-4 flex space-x-4">
+                            </motion.h3>
+                            <motion.div
+                                className="mt-4 flex space-x-4"
+                                variants={containerVariants}
+                            >
                                 {[
                                     {
                                         name: 'Facebook',
@@ -79,11 +157,13 @@ function Footer() {
                                         icon: 'M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z',
                                     },
                                 ].map((social) => (
-                                    <a
+                                    <motion.a
                                         key={social.name}
                                         href="#"
-                                        className="text-gray-400 transition-all duration-300 hover:scale-110 hover:text-amber-400"
                                         aria-label={social.name}
+                                        variants={socialIconVariants}
+                                        whileHover="hover"
+                                        whileTap="tap"
                                     >
                                         <svg
                                             className="h-6 w-6"
@@ -92,59 +172,97 @@ function Footer() {
                                         >
                                             <path d={social.icon} />
                                         </svg>
-                                    </a>
+                                    </motion.a>
                                 ))}
-                            </div>
-                        </div>
+                            </motion.div>
+                        </motion.div>
 
-                        <div>
-                            <h3 className="border-b border-gray-700 pb-2 text-lg font-semibold text-white">
+                        <motion.div variants={itemVariants}>
+                            <motion.h3
+                                className="border-b border-gray-700 pb-2 text-lg font-semibold text-white"
+                                variants={itemVariants}
+                            >
                                 Newsletter
-                            </h3>
-                            <form className="mt-4 flex transition-all duration-300 hover:shadow-lg">
-                                <input
+                            </motion.h3>
+                            <motion.form
+                                className="mt-4 flex"
+                                whileHover={{
+                                    scale: 1.02,
+                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                                }}
+                            >
+                                <motion.input
                                     type="email"
                                     placeholder="Your email"
                                     className="flex-1 rounded-l-md border border-gray-700 bg-gray-800 px-4 py-2 text-white transition-all duration-300 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 focus:outline-none"
+                                    whileFocus={{
+                                        borderColor: '#f59e0b',
+                                        boxShadow: '0 0 0 1px #f59e0b',
+                                    }}
                                     required
                                 />
-                                <button
+                                <motion.button
                                     type="submit"
-                                    className="rounded-r-md bg-amber-600 px-4 py-2 font-medium text-white transition-all duration-300 hover:bg-amber-500 focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none"
+                                    className="rounded-r-md bg-amber-600 px-4 py-2 font-medium text-white"
+                                    whileHover={{
+                                        backgroundColor: '#f59e0b',
+                                        scale: 1.05,
+                                    }}
+                                    whileTap={{ scale: 0.95 }}
                                 >
                                     Subscribe
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+                                </motion.button>
+                            </motion.form>
+                        </motion.div>
+                    </motion.div>
                 </div>
 
                 {/* Copyright */}
-                <div className="mt-12 border-t border-gray-800 pt-8 text-center text-sm text-gray-500">
-                    <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-                        <span>
+                <motion.div
+                    className="mt-12 border-t border-gray-800 pt-8 text-center text-sm text-gray-500"
+                    variants={itemVariants}
+                >
+                    <motion.div
+                        className="flex flex-wrap justify-center gap-x-4 gap-y-2"
+                        variants={containerVariants}
+                    >
+                        <motion.span variants={itemVariants}>
                             &copy; {new Date().getFullYear()} CaptureHub. All
                             rights reserved.
-                        </span>
-                        <a
+                        </motion.span>
+                        <motion.a
                             href="#"
-                            className="text-gray-400 transition-all duration-300 hover:text-amber-400 hover:underline"
+                            className="text-gray-400"
+                            variants={itemVariants}
+                            whileHover={{
+                                color: '#f59e0b',
+                                textDecoration: 'underline',
+                            }}
                         >
                             Privacy Policy
-                        </a>
-                        <a
+                        </motion.a>
+                        <motion.a
                             href="#"
-                            className="text-gray-400 transition-all duration-300 hover:text-amber-400 hover:underline"
+                            className="text-gray-400"
+                            variants={itemVariants}
+                            whileHover={{
+                                color: '#f59e0b',
+                                textDecoration: 'underline',
+                            }}
                         >
                             Terms of Service
-                        </a>
-                    </div>
-                    <p className="mt-3 text-gray-500 transition-all duration-300 hover:text-gray-400">
+                        </motion.a>
+                    </motion.div>
+                    <motion.p
+                        className="mt-3 text-gray-500"
+                        variants={itemVariants}
+                        whileHover={{ color: '#9ca3af' }}
+                    >
                         Designed and built with passion for photography
-                    </p>
-                </div>
+                    </motion.p>
+                </motion.div>
             </div>
-        </footer>
+        </motion.footer>
     )
 }
 

@@ -1,18 +1,22 @@
-import { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { StarIcon } from '@heroicons/react/24/solid'
+import { motion, useInView } from 'framer-motion'
+
+const fadeInUp = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+}
 
 const ProductShowcase = () => {
     const [mainImage, setMainImage] = useState('/camera1.png')
     const [selectedColor, setSelectedColor] = useState('Black')
 
-    // Sample data
     const thumbnails = [
         '/camera1.png',
         '/camera2.png',
         '/camera3.png',
         '/camera4.png',
     ]
-
     const colors = ['Black', 'Silver', 'Graphite']
     const reviews = [
         {
@@ -27,13 +31,26 @@ const ProductShowcase = () => {
         },
     ]
 
+    const section1Ref = useRef(null)
+    const section2Ref = useRef(null)
+    const section3Ref = useRef(null)
+
+    const isInView1 = useInView(section1Ref, { once: true, margin: '-50px' })
+    const isInView2 = useInView(section2Ref, { once: true, margin: '-50px' })
+    const isInView3 = useInView(section3Ref, { once: true, margin: '-50px' })
+
     return (
         <section className="bg-white py-16">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="lg:grid lg:grid-cols-2 lg:gap-16">
                     {/* Image Gallery */}
-                    <div className="mb-10 lg:mb-0">
-                        {/* Main Image */}
+                    <motion.div
+                        ref={section1Ref}
+                        variants={fadeInUp}
+                        initial="hidden"
+                        animate={isInView1 ? 'visible' : 'hidden'}
+                        className="mb-10 lg:mb-0"
+                    >
                         <div className="mb-4 flex justify-center rounded-lg bg-gray-50 p-8 shadow-sm">
                             <img
                                 src={mainImage}
@@ -41,8 +58,6 @@ const ProductShowcase = () => {
                                 className="h-80 w-full object-contain"
                             />
                         </div>
-
-                        {/* Thumbnails */}
                         <div className="grid grid-cols-4 gap-3">
                             {thumbnails.map((thumbnail, index) => (
                                 <button
@@ -62,11 +77,16 @@ const ProductShowcase = () => {
                                 </button>
                             ))}
                         </div>
-                    </div>
+                    </motion.div>
 
                     {/* Product Info */}
-                    <div className="font-mono">
-                        {/* Name & Rating */}
+                    <motion.div
+                        ref={section2Ref}
+                        variants={fadeInUp}
+                        initial="hidden"
+                        animate={isInView2 ? 'visible' : 'hidden'}
+                        className="font-mono"
+                    >
                         <h1 className="text-3xl font-bold text-gray-900">
                             Professional DSLR Camera X2000
                         </h1>
@@ -75,11 +95,7 @@ const ProductShowcase = () => {
                                 {[1, 2, 3, 4, 5].map((rating) => (
                                     <StarIcon
                                         key={rating}
-                                        className={`h-5 w-5 ${
-                                            rating <= 4
-                                                ? 'text-amber-400'
-                                                : 'text-gray-300'
-                                        }`}
+                                        className={`h-5 w-5 ${rating <= 4 ? 'text-amber-400' : 'text-gray-300'}`}
                                     />
                                 ))}
                             </div>
@@ -108,12 +124,7 @@ const ProductShowcase = () => {
                                 24.2MP resolution with exceptional low-light
                                 performance. Featuring 4K/60fps video, 5-axis
                                 stabilization, and weather-sealed magnesium
-                                alloy construction. Includes dual SD slots
-                                (128GB card included), 7fps continuous shooting,
-                                and 425-point AF system. The 3.2" tilting
-                                touchscreen and 4K output make it ideal for
-                                professionals and enthusiasts demanding top-tier
-                                image quality and durability.
+                                alloy construction...
                             </p>
                         </div>
 
@@ -145,49 +156,52 @@ const ProductShowcase = () => {
                                 Add to Cart
                             </button>
                         </div>
+                    </motion.div>
 
-                        {/* Reviews Preview */}
-                        <div className="mt-10 border-t border-gray-200 pt-8">
-                            <h2 className="text-lg font-medium text-gray-900">
-                                Customer Reviews
-                            </h2>
-                            <div className="mt-4 space-y-4">
-                                {reviews.map((review, index) => (
-                                    <div
-                                        key={index}
-                                        className="border-b border-gray-100 pb-4 last:border-0"
-                                    >
-                                        <div className="flex items-center">
-                                            <div className="flex">
-                                                {[1, 2, 3, 4, 5].map(
-                                                    (rating) => (
-                                                        <StarIcon
-                                                            key={rating}
-                                                            className={`h-5 w-5 ${
-                                                                rating <=
-                                                                review.rating
-                                                                    ? 'text-amber-400'
-                                                                    : 'text-gray-300'
-                                                            }`}
-                                                        />
-                                                    )
-                                                )}
-                                            </div>
-                                            <span className="ml-2 font-medium">
-                                                {review.name}
-                                            </span>
+                    {/* Reviews */}
+                    <motion.div
+                        ref={section3Ref}
+                        variants={fadeInUp}
+                        initial="hidden"
+                        animate={isInView3 ? 'visible' : 'hidden'}
+                        className="mt-10 border-t border-gray-200 pt-8 font-mono lg:col-span-2"
+                    >
+                        <h2 className="text-lg font-medium text-gray-900">
+                            Customer Reviews
+                        </h2>
+                        <div className="mt-4 space-y-4">
+                            {reviews.map((review, index) => (
+                                <div
+                                    key={index}
+                                    className="border-b border-gray-100 pb-4 last:border-0"
+                                >
+                                    <div className="flex items-center">
+                                        <div className="flex">
+                                            {[1, 2, 3, 4, 5].map((rating) => (
+                                                <StarIcon
+                                                    key={rating}
+                                                    className={`h-5 w-5 ${
+                                                        rating <= review.rating
+                                                            ? 'text-amber-400'
+                                                            : 'text-gray-300'
+                                                    }`}
+                                                />
+                                            ))}
                                         </div>
-                                        <p className="mt-1 text-gray-600">
-                                            {review.comment}
-                                        </p>
+                                        <span className="ml-2 font-medium">
+                                            {review.name}
+                                        </span>
                                     </div>
-                                ))}
-                                <button className="text-sm font-medium text-amber-600 hover:text-amber-500">
-                                    View all reviews →
-                                </button>
-                            </div>
+                                    <p className="mt-1 text-gray-600">
+                                        {review.comment}
+                                    </p>
+                                </div>
+                            ))}
+                            <button className="text-sm font-medium text-amber-600 hover:text-amber-500">
+                                View all reviews →
+                            </button>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </section>
